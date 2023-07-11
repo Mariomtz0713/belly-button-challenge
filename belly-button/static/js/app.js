@@ -1,31 +1,50 @@
-// Using D3 to read in samples.json
-let sampleData = d3.json('samples.json').then((data) => {console.log(data)});
-// data.samples[0].sample_values
+// Default plot
+function init() {
 
-var data.sort((a, b) => b.samples[0].sample_values - a.samples[0].sample_values) 
+d3.json('samples.json').then((data) => {console.log(data);
 
-// var sample_values =
-// var otu_ids =
-// var otu_lables =
+// Arrays of data values for charts
+var sampleValues = data.samples.map(data => data.sample_values);
+var otuIds = data.samples.map(data => data.otu_ids);
+var otuLabels = data.samples.map(data => data.otu_labels);
 
-// let barChart = {
-//     x: 100,
-//     y: 50,
-//     text: 'Bar Chart',
-//     type: 'bar',
-//     orientation: 'h'
-// };
+// Top 10 data values
+let sortedSampleValues = sampleValues.sort((a, b) => b - a);
+let top10SampleValues = sortedSampleValues.slice(0, 10);
+let sortedOtuIds = otuIds.sort((a,b) => b - a);
+let top10OtuIds = sortedOtuIds.slice(0,10);
+let sortedOtuLabels = otuLabels.sort((a,b) => b - a);
+let top10OtuLabes = sortedOtuLabels.slice(0,10);
 
-// traceData = [barChart];
+let barChart = [{
+    x: top10SampleValues[0].reverse(),
+    y: top10OtuIds[0].reverse().map(x => 'OTU ' + x),
+    text: top10OtuLabes[0].reverse(),
+    type: 'bar',
+    orientation: 'h'
+}];
+        
+let layout = {
+    title: 'Manifesting a Pink Dress',
+    margin: {
+        l: 150,
+        r: 50,
+        t: 50,
+        b: 50
+    }
+};
+    
+Plotly.newPlot('bar', barChart, layout);
 
-// let layout = {
-//     title: 'My First Chart',
-//     margin: {
-//         l: 100,
-//         r: 100,
-//         t: 100,
-//         b: 100
-//     }
-// };
+})};
 
-// Plotly.newPlot('plot', traceData, layout);
+
+// Updated plot
+function plotupdated () {
+
+};
+
+
+init();
+
+
